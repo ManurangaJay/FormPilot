@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: userservice
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/formpilot_user_db
+    username: postgres
+    password: PostgreSQL
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: activityservice
+
+# Connection Details
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: formpilot_activity_db
+
+server:
+  port: 8082

@@ -16,8 +16,15 @@ import java.util.stream.Collectors;
 public class ActivityService {
 
     private final ActivityRepository activityRepository;
+    private final UserValidationService userValidationService;
 
     public ActivityResponse trackActivity(ActivityRequest activityRequest) {
+        boolean isValidUser = userValidationService.validateUser(activityRequest.getUserId());
+
+        if(!isValidUser){
+            throw new RuntimeException("Invalid User: " + activityRequest.getUserId());
+        }
+
         Activity activity = Activity.builder()
                 .userId(activityRequest.getUserId())
                 .type(activityRequest.getType())
@@ -33,6 +40,8 @@ public class ActivityService {
     }
 
     private ActivityResponse mapToResponse(Activity activity){
+
+
         ActivityResponse response = new ActivityResponse();
         response.setId(activity.getId());
         response.setUserId(activity.getUserId());

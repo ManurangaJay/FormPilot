@@ -6,6 +6,7 @@ import com.formpilot.userservice.model.User;
 import com.formpilot.userservice.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -52,5 +53,9 @@ public class UserService {
         userResponse.setUpdatedAt(savedUser.getUpdatedAt());
 
         return userResponse;
+    }
+
+    public @Nullable Boolean existByUserId(String userId) {
+        return userRepository.existsById(userId);
     }
 }

@@ -7,6 +7,12 @@ spring:
       url: mongodb://localhost:27017/formpilot_ai_db
       database: formpilot_ai_db
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 server:
   port: 8083
 
@@ -18,3 +24,11 @@ eureka:
     hostname: localhost
     prefer-ip-address: false
     instance-id: ${spring.application.name}:${server.port}
+
+rabbitmq:
+  exchange:
+    name: fitness.exchange
+  queue:
+    name: activity.queue
+  routing:
+    key: activity.tracking

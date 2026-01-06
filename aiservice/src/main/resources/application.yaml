@@ -4,7 +4,8 @@ spring:
 
   data:
     mongodb:
-      url: mongodb://localhost:27017/formpilot_ai_db
+      host: localhost
+      port: 27017
       database: formpilot_ai_db
 
   rabbitmq:

@@ -1,48 +1,5 @@
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      server:
-        webflux:
-          routes:
-          - id: user-service
-            uri: lb://USER-SERVICE
-            predicates:
-            - Path=/api/users/**
-          - id: activity-service
-            uri: lb://ACTIVITY-SERVICE
-            predicates:
-              - Path=/api/activities/**
-          - id: ai-service
-            uri: lb://AI-SERVICE
-            predicates:
-              - Path=/api/recommendations/**
-server:
-  port: 8080
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    hostname: localhost
-    prefer-ip-address: false
-    instance-id: ${spring.application.name}:${server.port}
-
-#logging:
-#  level:
-#    org.springframework.cloud.gateway: TRACE
-#    org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
-#    # This specifically shows route matching logs
-#    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: TRACE
-#
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#
-#  endpoint:
-#    gateway:
-#      enabled: true
+  config:
+    import: optional:configserver:http://localhost:8888

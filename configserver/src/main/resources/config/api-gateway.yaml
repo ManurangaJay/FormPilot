@@ -18,6 +18,12 @@ spring:
             uri: lb://AI-SERVICE
             predicates:
               - Path=/api/recommendations/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8181/realms/formpilot_oauth2/protocol/openid-connect/certs
+
 server:
   port: 8080
 
@@ -29,3 +35,4 @@ eureka:
     hostname: localhost
     prefer-ip-address: false
     instance-id: ${spring.application.name}:${server.port}
+

@@ -38,7 +38,7 @@ public class ActivityService {
                 .userId(activityRequest.getUserId())
                 .type(activityRequest.getType())
                 .duration(activityRequest.getDuration())
-                .calariesBurned(activityRequest.getCalariesBurned())
+                .caloriesBurned(activityRequest.getCaloriesBurned())
                 .startTime(activityRequest.getStartTime())
                 .additionalMetrices(activityRequest.getAdditionalMetrices())
                 .build();
@@ -63,7 +63,7 @@ public class ActivityService {
         response.setUserId(activity.getUserId());
         response.setType(activity.getType());
         response.setDuration(activity.getDuration());
-        response.setCalariesBurned(activity.getCalariesBurned());
+        response.setCaloriesBurned(activity.getCaloriesBurned());
         response.setStartTime(activity.getStartTime());
         response.setAdditionalMetrices(activity.getAdditionalMetrices());
         response.setCreatedAt(activity.getCreatedAt());

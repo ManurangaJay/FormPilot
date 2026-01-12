@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
+import { addActivity } from "../services/api";
 
 const ActivityForm = ({ onActivityAdded }) => {
   const [activity, setActivity] = React.useState({
@@ -20,7 +21,7 @@ const ActivityForm = ({ onActivityAdded }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      //   await addActivity(activity);
+      await addActivity(activity);
       onActivityAdded();
       setActivity({ type: "RUNNING", duration: "", caloriesBurned: "" });
     } catch (error) {
@@ -63,7 +64,7 @@ const ActivityForm = ({ onActivityAdded }) => {
           setActivity({ ...activity, caloriesBurned: e.target.value })
         }
       />
-      <Button type="submit" variant="contained">
+      <Button type="submit" variant="contained" onClick={handleSubmit}>
         Add Activity
       </Button>
     </Box>

@@ -14,15 +14,25 @@ spring:
 
   cloud:
     stream:
-      bindings:
-        activity-out-0:
-          destination: fitness.exchange
-          content-type: application/json
-      rabbit:
+      kafka:
+        binder:
+          brokers: localhost:9092
+          auto-create-topics: true
         bindings:
           activity-out-0:
-            producer:
-              routing-key-expression: "'activity.tracking'"
+            destination: fitness-topic
+            content-type: application/json
+
+# RabbitMQ configurations
+#      bindings:
+#        activity-out-0:
+#          destination: fitness.exchange
+#          content-type: application/json
+#      rabbit:
+#        bindings:
+#          activity-out-0:
+#            producer:
+#              routing-key-expression: "'activity.tracking'"
 
 
 

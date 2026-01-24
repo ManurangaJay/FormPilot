@@ -7,9 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.function.Consumer;
+
+@Configuration
 @Slf4j
 @RequiredArgsConstructor
 public class ActivityMessageListener {
@@ -17,11 +21,25 @@ public class ActivityMessageListener {
     private final ActivityAIService aiService;
     private final RecommendationRepository repository;
 
-    @RabbitListener(queues = "activity.queue")
-    public void processActivity(Activity activity){
-        log.info("Received activity for processing: {}" , activity.getId());
-//        log.info("Generated Recommendation: {}" , aiService.generateRecommendation(activity));
-        Recommendation recommendation = aiService.generateRecommendation(activity);
-        repository.save(recommendation);
+    @Bean
+    public Consumer<Activity> activityProcessor(){
+        return activity -> {
+            log.info("Received activity for processing via Stream: {}" , activity.getId());
+            try {
+                Recommendation recommendation = aiService.generateRecommendation(activity);
+                repository.save(recommendation);
+                log.info("Saved Recommendation for activity: {}", activity.getId() );
+            } catch (Exception e){
+                log.error("Failed to process activity: {}", activity.getId(), e);
+            }
+        };
     }
+
+//    @RabbitListener(queues = "activity.queue")
+//    public void processActivity(Activity activity){
+//        log.info("Received activity for processing: {}" , activity.getId());
+////        log.info("Generated Recommendation: {}" , aiService.generateRecommendation(activity));
+//        Recommendation recommendation = aiService.generateRecommendation(activity);
+//        repository.save(recommendation);
+//    }
 }

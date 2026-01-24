@@ -5,6 +5,21 @@ spring:
       port: 27017
       database: formpilot_ai_db
 
+  cloud:
+    function:
+      definition: activityProcessor
+    stream:
+      bindings:
+        activityProcessor-in-0:
+          destination: fitness.exchange
+          group: ai-service-group
+          content-type: application/json
+      rabbit:
+        bindings:
+          activityProcessor-in-0:
+            consumer:
+              binding-routing-key: activity.tracking
+
   rabbitmq:
     host: localhost
     port: 5672
@@ -23,13 +38,13 @@ eureka:
     prefer-ip-address: false
     instance-id: ${spring.application.name}:${server.port}
 
-rabbitmq:
-  exchange:
-    name: fitness.exchange
-  queue:
-    name: activity.queue
-  routing:
-    key: activity.tracking
+#rabbitmq:
+#  exchange:
+#    name: fitness.exchange
+#  queue:
+#    name: activity.queue
+#  routing:
+#    key: activity.tracking
 
 gemini:
   api:

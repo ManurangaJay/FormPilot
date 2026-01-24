@@ -12,6 +12,20 @@ spring:
     username: guest
     password: guest
 
+  cloud:
+    stream:
+      bindings:
+        activity-out-0:
+          destination: fitness.exchange
+          content-type: application/json
+      rabbit:
+        bindings:
+          activity-out-0:
+            producer:
+              routing-key-expression: "'activity.tracking'"
+
+
+
 server:
   port: 8082
 
@@ -24,10 +38,10 @@ eureka:
     prefer-ip-address: false
     instance-id: ${spring.application.name}:${server.port}
 
-rabbitmq:
-  exchange:
-    name: fitness.exchange
-  queue:
-    name: activity.queue
-  routing:
-    key: activity.tracking
+#rabbitmq:
+#  exchange:
+#    name: fitness.exchange
+#  queue:
+#    name: activity.queue
+#  routing:
+#    key: activity.tracking

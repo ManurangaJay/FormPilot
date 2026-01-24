@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final UserValidationService userValidationService;
-    private final RabbitTemplate rabbitTemplate;
+    private final StreamBridge streamBridge;
 
-    @Value("${rabbitmq.exchange.name}")
-    private String exchange;
-    @Value("${rabbitmq.routing.key}")
-    private String routingKey;
+//    @Value("${rabbitmq.exchange.name}")
+//    private String exchange;
+//    @Value("${rabbitmq.routing.key}")
+//    private String routingKey;
 
     public ActivityResponse trackActivity(ActivityRequest activityRequest) {
         boolean isValidUser = userValidationService.validateUser(activityRequest.getUserId());
@@ -47,11 +48,11 @@ public class ActivityService {
 
         // Publish to RabbitMQ for AI processing
         try{
-            rabbitTemplate.convertAndSend(exchange, routingKey, savedActivity);
+            log.info("Sending activity even for user: {}", savedActivity.getUserId());
+            streamBridge.send("activity-out-0", savedActivity);
         }catch (Exception e){
             log.error("Failed to publish activity to RabbitMQ: " , e);
         }
-
         return mapToResponse(savedActivity);
     }
 
